@@ -51,16 +51,16 @@ interface ShoppingCartDao {
     fun getProducts(): LiveData<List<Product>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(vararg product: Product)
+    fun insert(vararg product: Product)
 
     @Update
-    suspend fun update(product: Product)
+    fun update(product: Product)
 
     @Delete
-    suspend fun delete(product: Product)
+    fun delete(product: Product)
 
     @Query("delete from shopping_cart")
-    suspend fun deleteAll()
+    fun deleteAll()
 }
 
 class StoreConverters {
@@ -94,44 +94,44 @@ abstract class StoreDatabase : RoomDatabase() {
         }
 
         suspend fun populateDatabase(shoppingCartDao: ShoppingCartDao) {
-            // NOTE: This is a demo and to guarantee that every run starts in a good state,
-            //       we reset the database completely here
-            shoppingCartDao.deleteAll()
+            scope.launch(Dispatchers.IO) {
+                shoppingCartDao.deleteAll()
 
-            shoppingCartDao.insert(
-                Product(
-                    0,
-                    "Car paint",
-                    "Fiery Red",
-                    1_50,
-                    AmountUnit.LITER,
-                    3
-                ),
-                Product(
-                    0,
-                    "Wood",
-                    "N/A",
-                    10_00,
-                    AmountUnit.KILOGRAM,
-                    2
-                ),
-                Product(
-                    0,
-                    "Carbon fiber",
-                    "N/A",
-                    1_00,
-                    AmountUnit.KILOGRAM,
-                    1
-                ),
-                Product(
-                    0,
-                    "Lacquered wood",
-                    "N/A",
-                    12_00,
-                    AmountUnit.KILOGRAM,
-                    1
+                shoppingCartDao.insert(
+                    Product(
+                        0,
+                        "Car paint",
+                        "Fiery Red",
+                        1_50,
+                        AmountUnit.LITER,
+                        3
+                    ),
+                    Product(
+                        0,
+                        "Wood",
+                        "N/A",
+                        10_00,
+                        AmountUnit.KILOGRAM,
+                        2
+                    ),
+                    Product(
+                        0,
+                        "Carbon fiber",
+                        "N/A",
+                        1_00,
+                        AmountUnit.KILOGRAM,
+                        1
+                    ),
+                    Product(
+                        0,
+                        "Lacquered wood",
+                        "N/A",
+                        12_00,
+                        AmountUnit.KILOGRAM,
+                        1
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -160,13 +160,9 @@ abstract class StoreDatabase : RoomDatabase() {
 }
 
 class StoreViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: ShoppingCartDao =
-            StoreDatabase.getDatabase(application, viewModelScope).shoppingCartDao()
-    val shoppingCart: LiveData<List<Product>>
+    private val repository: ShoppingCartDao = StoreDatabase.getDatabase(application, viewModelScope).shoppingCartDao()
 
-    init {
-        shoppingCart = repository.getProducts()
-    }
+    val shoppingCart: LiveData<List<Product>> = repository.getProducts()
 
     fun delete(product: Product) = viewModelScope.launch(Dispatchers.IO) {
         repository.delete(product)

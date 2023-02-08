@@ -17,11 +17,11 @@
 package com.curiouscreature.compose.sample.shop
 
 import androidx.compose.runtime.*
-import androidx.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import com.curiouscreature.compose.sample.shop.AmountUnit.LITER
 
-@Preview
 @Composable
+@Preview
 fun CartItemPreview() {
     StoreTheme {
         var quantity by remember { mutableStateOf(1) }
