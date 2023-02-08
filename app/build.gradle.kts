@@ -38,8 +38,10 @@ dependencies {
 
     implementation ("androidx.compose.foundation:foundation:1.4.0-alpha05")
     implementation ("androidx.compose.material:material:1.4.0-alpha05")
-    //implementation ("androidx.compose.material:material3:1.1.0-alpha05")
     runtimeOnly("androidx.compose.material3:material3:1.1.0-alpha05")
+    implementation("androidx.compose.material:material-icons-extended:1.4.0-alpha05")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha06")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha06")
     implementation ("androidx.compose.runtime:runtime:1.4.0-alpha05")
     implementation ("androidx.compose.runtime:runtime-livedata:1.4.0-alpha04")
     implementation ("androidx.compose.ui:ui:1.4.0-alpha05")
@@ -50,6 +52,7 @@ dependencies {
     implementation ("androidx.wear.compose:compose-foundation:1.2.0-alpha03")
     implementation ("androidx.wear.compose:compose-material:1.2.0-alpha03")
     implementation ("androidx.wear.compose:compose-navigation:1.2.0-alpha03")
+
 
     implementation("com.google.android.filament:filament-android:$filamentVersion")
     implementation("com.google.android.filament:filament-utils-android:$filamentVersion")

@@ -22,11 +22,13 @@ import android.view.SurfaceView
 import android.widget.FrameLayout
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
@@ -36,20 +38,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.sharp.Add
-//import androidx.compose.material.icons.sharp.Remove
+import androidx.compose.material.icons.sharp.Remove
 import androidx.compose.runtime.*
-//import androidx.compose.runtime.dispatch.withFrameNanos
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import com.curiouscreature.compose.R
+
 import com.google.android.filament.*
 import com.google.android.filament.Colors
 import com.google.android.filament.gltfio.AssetLoader
@@ -57,6 +60,9 @@ import com.google.android.filament.gltfio.MaterialProvider
 import com.google.android.filament.gltfio.ResourceLoader
 import com.google.android.filament.utils.KtxLoader
 import com.google.android.filament.utils.Utils
+
+import com.curiouscreature.compose.R
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var storeViewModel: StoreViewModel
@@ -190,38 +196,48 @@ fun ShoppingCart( shoppingCart: LiveData<List<Product>>, increase: (Product) -> 
 fun ShoppingCartItem(product: Product, increase: (Product) -> Unit = {}, decrease: (Product) -> Unit = {}, updateColor: (Product) -> Unit = {}, content: @Composable () -> Unit = {}) {
     val (selected, onSelected) = remember { mutableStateOf(false) }
 
-//        val topLeftCornerRadius = animate(target = if (selected) 48.dp.value else 8.dp.value)
-//        val cornerRadius = animate(target = if (selected) 0.dp.value else 8.dp.value)
+    var topLeftCornerRadius by remember { mutableStateOf(8f) }
+    var cornerRadius by remember { mutableStateOf(0f) }
+
+    LaunchedEffect(Unit) {
+        animate(
+            initialValue = 0f, targetValue = if (selected) 48f else 8f,
+            animationSpec = infiniteRepeatable(tween(durationMillis = 200, easing = LinearEasing)),
+        ) { value, _ ->
+            topLeftCornerRadius = value
+        }
+        animate(
+            initialValue = 0f, targetValue = if (selected) 0f else 8f,
+            animationSpec = infiniteRepeatable(tween(durationMillis = 200, easing = LinearEasing)),
+        ) { value, _ ->
+            cornerRadius = value
+        }
+    }
 
     Surface(
         modifier = Modifier.padding(16.dp, 8.dp, 16.dp, 8.dp),
-//            shape = RoundedCornerShape(
-//                topLeft = topLeftCornerRadius.dp,
-//                topRight = cornerRadius.dp,
-//                bottomLeft = cornerRadius.dp,
-//                bottomRight = cornerRadius.dp
-//            ),
-        shape = RoundedCornerShape(
-            topStart = 8.dp,
-            topEnd = 48.dp
-        ),
+            shape = RoundedCornerShape(
+                topStart = topLeftCornerRadius.dp,
+                topEnd = cornerRadius.dp,
+                bottomStart = cornerRadius.dp,
+                bottomEnd = cornerRadius.dp
+            ),
         elevation = 4.dp
     ) {
         Column {
-            Stack(
-                modifier = Modifier.toggleable(value = selected, onValueChange = onSelected)
-            ) {
+            Box( modifier = Modifier.toggleable(value = selected, onValueChange = onSelected)) {
+
+                var selectedAlpha by remember { mutableStateOf(0f) }
+
                 content()
 
-                val selectedAlpha = animate(target = if (selected) 0.65f else 0.0f)
+                LaunchedEffect(Unit) {
+                    animate(initialValue = 0f, targetValue = if (selected) 0.65f else 0f, animationSpec = infiniteRepeatable(tween(durationMillis = 200, easing = LinearEasing))) { value, _ -> selectedAlpha = value }
+                }
+
                 Surface(
-                    modifier = Modifier.matchParentSize(),
-                    color = MaterialTheme.colors.primary.copy(alpha = selectedAlpha)
-                ) {
-                    Icon(
-                        asset = Icons.Filled.Done,
-                        tint = contentColor().copy(alpha = selectedAlpha)
-                    )
+                    modifier = Modifier.matchParentSize(), color = MaterialTheme.colors.primary.copy(alpha = selectedAlpha)) {
+                    Icon(painter = rememberVectorPainter(Icons.Filled.Done), contentDescription = "Done", tint = LocalContentColor.current.copy(alpha = selectedAlpha))
                 }
             }
 
@@ -233,69 +249,62 @@ fun ShoppingCartItem(product: Product, increase: (Product) -> Unit = {}, decreas
 @Composable
 fun ShoppingCartItemRow(product: Product, decrease: (Product) -> Unit = { }, increase: (Product) -> Unit = { }, updateColor: (Product) -> Unit = { }) {
     val hasColorSwatch = product.color.isProductColor
-//        ConstraintLayout(modifier = Modifier
-//            .padding(12.dp)
-//            .fillMaxWidth()) {
-//            val (decreaseRef, increaseRef, labelRef, colorRef, amountRef) = createRefs()
-//
-//            SmallButton(
-//                modifier = Modifier.constrainAs(decreaseRef) {
-//                    start.linkTo(parent.start)
-//                    centerVerticallyTo(parent)
-//                },
-//                onClick = { decrease(product) }
-//            ) {
-//                Image(Icons.Sharp.Remove)
-//            }
-//
-//            SmallButton(
-//                modifier = Modifier.constrainAs(increaseRef) {
-//                    start.linkTo(decreaseRef.end, margin = 4.dp)
-//                    centerVerticallyTo(parent)
-//                },
-//                onClick = { increase(product) }
-//            ) {
-//                Image(Icons.Sharp.Add)
-//            }
-//
-//            Text(
-//                modifier = Modifier.constrainAs(labelRef) {
-//                    start.linkTo(increaseRef.end, margin = 8.dp)
-//                    centerVerticallyTo(parent)
-//                },
-//                text = "${product.quantity}× ${product.material}"
-//            )
-//
-//            if (hasColorSwatch) {
-//                SmallButton(
-//                    modifier = Modifier.constrainAs(colorRef) {
-//                        start.linkTo(labelRef.end, margin = 4.dp)
-//                        centerVerticallyTo(parent)
-//                    },
-//                    onClick = { updateColor(product) },
-//                    color = Color.White
-//                ) {
-//                    Box(
-//                        modifier = Modifier.size(13.dp),
-//                        shape = CircleShape,
-//                        gravity = Alignment.Center,
-//                        backgroundColor = productColor(product)
-//                    )
-//                }
-//            }
-//
-//            Text(
-//                modifier = Modifier.constrainAs(amountRef) {
-//                    linkTo(
-//                        start = (if (hasColorSwatch) colorRef else labelRef).end,
-//                        end = parent.end,
-//                        bias = 1.0f
-//                    )
-//                    centerVerticallyTo(parent)
-//                },
-//                text = formatAmount(product)
-//            )
-//        }
+        ConstraintLayout(modifier = Modifier.padding(12.dp).fillMaxWidth()) {
+            val (decreaseRef, increaseRef, labelRef, colorRef, amountRef) = createRefs()
+
+            SmallButton(
+                modifier = Modifier.constrainAs(decreaseRef) {
+                    start.linkTo(parent.start)
+                    centerVerticallyTo(parent)
+                },
+                onClick = { decrease(product) }
+            ) {
+                Image(Icons.Sharp.Remove, "")
+            }
+
+            SmallButton(
+                modifier = Modifier.constrainAs(increaseRef) {
+                    start.linkTo(decreaseRef.end, margin = 4.dp)
+                    centerVerticallyTo(parent)
+                },
+                onClick = { increase(product) }
+            ) {
+                Image(Icons.Sharp.Add, "")
+            }
+
+            Text(
+                modifier = Modifier.constrainAs(labelRef) {
+                    start.linkTo(increaseRef.end, margin = 8.dp)
+                    centerVerticallyTo(parent)
+                },
+                text = "${product.quantity}× ${product.material}"
+            )
+
+            if (hasColorSwatch) {
+                SmallButton(
+                    modifier = Modifier.constrainAs(colorRef) {
+                        start.linkTo(labelRef.end, margin = 4.dp)
+                        centerVerticallyTo(parent)
+                    },
+                    onClick = { updateColor(product) },
+                    color = Color.White
+                ) {
+                    Box(modifier = Modifier.size(13.dp).clip(CircleShape).background(productColor(product)))
+                }
+            }
+
+            Text(
+                modifier = Modifier.constrainAs(amountRef) {
+                    linkTo(
+                        start = (if (hasColorSwatch) colorRef else labelRef).end,
+                        end = parent.end,
+                        bias = 1.0f
+                    )
+                    centerVerticallyTo(parent)
+                },
+                text = formatAmount(product)
+            )
+        }
 }
 
 @Composable
