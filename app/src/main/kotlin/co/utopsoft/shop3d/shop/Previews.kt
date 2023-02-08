@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.curiouscreature.compose.sample.shop
+package co.utopsoft.shop3d.shop
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
-import com.curiouscreature.compose.sample.shop.AmountUnit.LITER
+import co.utopsoft.shop3d.shop.AmountUnit.LITER
 
 @Composable
 @Preview

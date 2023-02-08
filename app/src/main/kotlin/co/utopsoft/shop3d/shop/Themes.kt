@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.curiouscreature.compose.sample.shop
+package co.utopsoft.shop3d.shop
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.lightColors

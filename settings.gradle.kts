@@ -1,4 +1,4 @@
-rootProject.name = "sample-materials-shop"
+rootProject.name = "shop3d"
 
 include(":app")
 

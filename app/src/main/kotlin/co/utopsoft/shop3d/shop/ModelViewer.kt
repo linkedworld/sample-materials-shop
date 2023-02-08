@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.curiouscreature.compose.sample.shop
+package co.utopsoft.shop3d.shop
 
 import android.animation.ValueAnimator
 import android.view.Surface

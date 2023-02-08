@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.curiouscreature.compose.sample.shop
+package co.utopsoft.shop3d.shop
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -56,7 +56,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.filament.*
 import com.google.android.filament.Colors
 import com.google.android.filament.gltfio.AssetLoader
-import com.google.android.filament.gltfio.MaterialProvider
 import com.google.android.filament.gltfio.ResourceLoader
 import com.google.android.filament.utils.KTX1Loader
 import com.google.android.filament.utils.Utils
