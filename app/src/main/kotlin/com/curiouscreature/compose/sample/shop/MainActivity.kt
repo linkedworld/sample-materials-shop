@@ -58,10 +58,11 @@ import com.google.android.filament.Colors
 import com.google.android.filament.gltfio.AssetLoader
 import com.google.android.filament.gltfio.MaterialProvider
 import com.google.android.filament.gltfio.ResourceLoader
-import com.google.android.filament.utils.KtxLoader
+import com.google.android.filament.utils.KTX1Loader
 import com.google.android.filament.utils.Utils
 
 import com.curiouscreature.compose.R
+import com.google.android.filament.gltfio.UbershaderProvider
 
 
 class MainActivity : AppCompatActivity() {
@@ -134,17 +135,17 @@ class MainActivity : AppCompatActivity() {
     }
     private fun initFilament() {
         engine = Engine.create()
-        assetLoader = AssetLoader(engine, MaterialProvider(engine), EntityManager.get())
+        assetLoader = AssetLoader(engine, UbershaderProvider(engine), EntityManager.get())
         resourceLoader = ResourceLoader(engine)
 
         val ibl = "courtyard_8k"
         readCompressedAsset(this, "envs/${ibl}/${ibl}_ibl.ktx").let {
-            indirectLight = KtxLoader.createIndirectLight(engine, it)
+            indirectLight = KTX1Loader.createIndirectLight(engine, it)
             indirectLight.intensity = 30_000.0f
         }
 
         readCompressedAsset(this, "envs/${ibl}/${ibl}_skybox.ktx").let {
-            skybox = KtxLoader.createSkybox(engine, it)
+            skybox = KTX1Loader.createSkybox(engine, it)
         }
 
         light = EntityManager.get().create()

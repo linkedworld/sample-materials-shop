@@ -10,7 +10,7 @@ val composeVersion = "1.4.0-alpha04"
 val coroutinesVersion = "1.3.7"
 val roomVersion = "2.2.5"
 val archLifecycleVersion = "2.5.1"
-val filamentVersion = "1.8.1"
+val filamentVersion = "1.31.3"
 
 dependencies {
     implementation(kotlin("stdlib"))
@@ -53,10 +53,10 @@ dependencies {
     implementation ("androidx.wear.compose:compose-material:1.2.0-alpha03")
     implementation ("androidx.wear.compose:compose-navigation:1.2.0-alpha03")
 
-
-    implementation("com.google.android.filament:filament-android:$filamentVersion")
-    implementation("com.google.android.filament:filament-utils-android:$filamentVersion")
-    implementation("com.google.android.filament:gltfio-android:$filamentVersion")
+    implementation ("com.google.android.filament:filament-android:$filamentVersion")
+    implementation ("com.google.android.filament:filament-utils-android:$filamentVersion")
+    implementation ("com.google.android.filament:gltfio-android:$filamentVersion")
+    implementation ("com.google.android.filament:filamat-android-lite:$filamentVersion")
 }
 
 android {

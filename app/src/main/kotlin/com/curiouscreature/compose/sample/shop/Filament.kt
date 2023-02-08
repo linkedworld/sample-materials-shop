@@ -36,7 +36,7 @@ fun loadModelGlb(
     resourceLoader: ResourceLoader,
     buffer: Buffer
 ): FilamentAsset {
-    val asset = assetLoader.createAssetFromBinary(buffer)
+    val asset = assetLoader.createAsset(buffer)
     asset?.apply {
         resourceLoader.loadResources(asset)
         asset.releaseSourceData()
