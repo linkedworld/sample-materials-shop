@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
 
         initFilament()
 
-        storeViewModel = ViewModelProvider(this).get(StoreViewModel::class.java)
+        storeViewModel = ViewModelProvider(this)[StoreViewModel::class.java]
         val shoppingCart = storeViewModel.shoppingCart
 
         val increase: (Product) -> Unit = { product ->
@@ -202,13 +202,13 @@ fun ShoppingCartItem(product: Product, increase: (Product) -> Unit = {}, decreas
     LaunchedEffect(Unit) {
         animate(
             initialValue = 0f, targetValue = if (selected) 48f else 8f,
-            animationSpec = infiniteRepeatable(tween(durationMillis = 200, easing = LinearEasing)),
+            animationSpec = tween(durationMillis = 200, easing = LinearEasing),
         ) { value, _ ->
             topLeftCornerRadius = value
         }
         animate(
             initialValue = 0f, targetValue = if (selected) 0f else 8f,
-            animationSpec = infiniteRepeatable(tween(durationMillis = 200, easing = LinearEasing)),
+            animationSpec = tween(durationMillis = 200, easing = LinearEasing),
         ) { value, _ ->
             cornerRadius = value
         }
@@ -317,7 +317,6 @@ fun FilamentViewer(product: Product) {
         }
     }
 
-    //FIXME onCommit(product)
     SideEffect {
         val (engine, scene, asset) = scenes[product.material]!!
         modelViewer?.scene = scene
@@ -371,7 +370,10 @@ fun SmallButton(modifier: Modifier = Modifier, onClick: () -> Unit = { }, color:
 
 @Composable
 fun StoreAppBar() {
-    TopAppBar(title = { Text(LocalContext.current.getString(R.string.app_name)) })
+    TopAppBar(
+        title = { Text(LocalContext.current.getString(R.string.app_name), color=Color.White)},
+        backgroundColor = Color(0x21, 0x96, 0xF3, 0xFF)
+    )
 }
 
 @Composable
