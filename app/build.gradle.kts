@@ -5,7 +5,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-//val composeVersion = "1.0.0-alpha03"
 val composeVersion = "1.4.0-alpha04"
 val coroutinesVersion = "1.3.7"
 val roomVersion = "2.2.5"

@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.curiouscreature.compose.R
 
@@ -60,16 +61,12 @@ val String.isProductColor: Boolean
 
 @Composable
 fun SampleImage(color: String) {
-//    Image(
-//        modifier = Modifier.fillMaxWidth().height(180.dp),
-//        contentScale = ContentScale.Crop,
-//        asset = imageResource(
-//            ProductColorSampleImages.getOrElse(color) { R.drawable.sample_orange }
-//        )
-//    )
     Image(
-        painterResource(R.drawable.sample_orange),
+        painterResource(
+            ProductColorSampleImages.getOrElse(color) { R.drawable.sample_orange }
+        ),
         contentDescription = null,
-        modifier = Modifier.requiredSize(50.dp)
+        modifier = Modifier.fillMaxWidth().height(180.dp),
+        contentScale = ContentScale.Crop,
     )
 }

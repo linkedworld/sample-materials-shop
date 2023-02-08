@@ -98,38 +98,10 @@ abstract class StoreDatabase : RoomDatabase() {
                 shoppingCartDao.deleteAll()
 
                 shoppingCartDao.insert(
-                    Product(
-                        0,
-                        "Car paint",
-                        "Fiery Red",
-                        1_50,
-                        AmountUnit.LITER,
-                        3
-                    ),
-                    Product(
-                        0,
-                        "Wood",
-                        "N/A",
-                        10_00,
-                        AmountUnit.KILOGRAM,
-                        2
-                    ),
-                    Product(
-                        0,
-                        "Carbon fiber",
-                        "N/A",
-                        1_00,
-                        AmountUnit.KILOGRAM,
-                        1
-                    ),
-                    Product(
-                        0,
-                        "Lacquered wood",
-                        "N/A",
-                        12_00,
-                        AmountUnit.KILOGRAM,
-                        1
-                    )
+                    Product(0, "Car paint", "Fiery Red", 1_50, AmountUnit.LITER, 3),
+                    Product(1, "Wood", "N/A", 10_00, AmountUnit.KILOGRAM, 2),
+                    Product(2, "Carbon fiber", "N/A", 1_00, AmountUnit.KILOGRAM, 1),
+                    Product(3, "Lacquered wood", "N/A", 12_00, AmountUnit.KILOGRAM, 1)
                 )
             }
         }
