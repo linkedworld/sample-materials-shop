@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package co.utopsoft.shop3d.shop
+package co.utopsoft.shop3d.v1
 
 import android.animation.ValueAnimator
 import android.view.Surface
@@ -35,12 +35,10 @@ private const val kAperture = 16f
 private const val kShutterSpeed = 1f / 125f
 private const val kSensitivity = 100f
 
-class ModelViewer(
-    val engine: Engine,
-    val surfaceView: SurfaceView
-) {
+class ModelViewer(val engine: Engine, val surfaceView: SurfaceView) {
     val view: View = engine.createView()
-    val camera: Camera = engine.createCamera(engine.entityManager.create()).apply { setExposure(kAperture, kShutterSpeed, kSensitivity) }
+    val camera: Camera = engine.createCamera(engine.entityManager.create())
+        .apply { setExposure(kAperture, kShutterSpeed, kSensitivity) }
     var scene: Scene? = null
         set(value) {
             view.scene = value
@@ -51,7 +49,6 @@ class ModelViewer(
     private var displayHelper: DisplayHelper
     private var swapChain: SwapChain? = null
     private val renderer: Renderer = engine.createRenderer()
-
     private val animator = ValueAnimator.ofFloat(0.0f, (2.0 * PI).toFloat())
 
     init {
@@ -78,24 +75,23 @@ class ModelViewer(
         }
         animator.start()
     }
-
     fun render(frameTimeNanos: Long) {
         if (!uiHelper.isReadyToRender) {
             return
         }
 
-        // Render the scene, unless the renderer wants to skip the frame.
         if (renderer.beginFrame(swapChain!!, frameTimeNanos)) {
             renderer.render(view)
             renderer.endFrame()
         }
     }
-
     private fun addDetachListener(view: android.view.View) {
         class AttachListener : android.view.View.OnAttachStateChangeListener {
             var detached = false
 
-            override fun onViewAttachedToWindow(v: android.view.View) { detached = false }
+            override fun onViewAttachedToWindow(v: android.view.View) {
+                detached = false
+            }
 
             override fun onViewDetachedFromWindow(v: android.view.View) {
                 if (!detached) {
@@ -115,14 +111,12 @@ class ModelViewer(
         }
         view.addOnAttachStateChangeListener(AttachListener())
     }
-
     inner class SurfaceCallback : UiHelper.RendererCallback {
         override fun onNativeWindowChanged(surface: Surface) {
             swapChain?.let { engine.destroySwapChain(it) }
             swapChain = engine.createSwapChain(surface)
             displayHelper.attach(renderer, surfaceView.display)
         }
-
         override fun onDetachedFromSurface() {
             displayHelper.detach()
             swapChain?.let {
@@ -131,7 +125,6 @@ class ModelViewer(
                 swapChain = null
             }
         }
-
         override fun onResized(width: Int, height: Int) {
             view.viewport = Viewport(0, 0, width, height)
             val aspect = width.toDouble() / height.toDouble()

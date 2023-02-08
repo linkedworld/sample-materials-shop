@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package co.utopsoft.shop3d.shop
+package co.utopsoft.shop3d.v1
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -60,9 +60,8 @@ import com.google.android.filament.gltfio.ResourceLoader
 import com.google.android.filament.utils.KTX1Loader
 import com.google.android.filament.utils.Utils
 
-import com.curiouscreature.compose.R
+import co.utopsoft.shop3d.R
 import com.google.android.filament.gltfio.UbershaderProvider
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var storeViewModel: StoreViewModel
@@ -180,7 +179,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun ShoppingCart( shoppingCart: LiveData<List<Product>>, increase: (Product) -> Unit, decrease: (Product) -> Unit, updateColor: (Product) -> Unit, padding: PaddingValues) {
+fun ShoppingCart(shoppingCart: LiveData<List<Product>>, increase: (Product) -> Unit, decrease: (Product) -> Unit, updateColor: (Product) -> Unit, padding: PaddingValues) {
     val products by shoppingCart.observeAsState(emptyList())
 
     LazyColumn(modifier = Modifier.padding(padding)) {

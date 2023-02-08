@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.curiouscreature.compose.sample.shop
+package co.utopsoft.shop3d.v1
 
 import android.content.Context
 import com.google.android.filament.Engine

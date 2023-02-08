@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.curiouscreature.compose.sample.shop
+package co.utopsoft.shop3d.v1
 
 import android.app.Application
 import android.content.Context
@@ -132,7 +132,8 @@ abstract class StoreDatabase : RoomDatabase() {
 }
 
 class StoreViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: ShoppingCartDao = StoreDatabase.getDatabase(application, viewModelScope).shoppingCartDao()
+    private val repository: ShoppingCartDao = StoreDatabase.getDatabase(application, viewModelScope)
+        .shoppingCartDao()
 
     val shoppingCart: LiveData<List<Product>> = repository.getProducts()
 

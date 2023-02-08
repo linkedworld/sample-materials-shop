@@ -63,7 +63,7 @@ android {
     buildToolsVersion = "33.0.1"
 
     defaultConfig {
-        applicationId = "com.curiouscreature.compose"
+        applicationId = "co.utopsoft.shop3d"
         minSdk = 29
         targetSdk = 33
         versionCode = 1

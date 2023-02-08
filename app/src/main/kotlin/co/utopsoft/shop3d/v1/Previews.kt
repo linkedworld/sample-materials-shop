@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package co.utopsoft.shop3d.shop
+package co.utopsoft.shop3d.v1
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
-import co.utopsoft.shop3d.shop.AmountUnit.LITER
+import co.utopsoft.shop3d.v1.AmountUnit.LITER
 
 @Composable
 @Preview
